@@ -207,7 +207,7 @@ class TFRecordDataset:
         features = tf.parse_single_example(record, features={
             'shape': tf.FixedLenFeature([3], tf.int64),
             'data': tf.FixedLenFeature([], tf.string)})
-        data = tf.decode_raw(features['data'], tf.uint8)
+        data = tf.decode_raw(features['data'], tf.uint16)
         return tf.reshape(data, features['shape'])
 
     # Parse individual image from a tfrecords file into NumPy array.
@@ -217,7 +217,7 @@ class TFRecordDataset:
         ex.ParseFromString(record)
         shape = ex.features.feature['shape'].int64_list.value # pylint: disable=no-member
         data = ex.features.feature['data'].bytes_list.value[0] # pylint: disable=no-member
-        return np.fromstring(data, np.uint8).reshape(shape)
+        return np.fromstring(data, np.uint16).reshape(shape)
 
 #----------------------------------------------------------------------------
 # Construct a dataset object using the given options.
