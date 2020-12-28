@@ -38,7 +38,7 @@ class TFRecordDataset:
         self.resolution         = None
         self.resolution_log2    = None
         self.shape              = []        # [channels, height, width]
-        self.dtype              = 'uint8'
+        self.dtype              = 'uint16'
         self.label_file         = label_file
         self.label_size         = None      # components
         self.label_dtype        = None
