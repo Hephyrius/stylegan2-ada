@@ -17,7 +17,7 @@ import tensorflow as tf
 import dnnlib
 import dnnlib.tflib as tflib
 from dnnlib.tflib.autosummary import autosummary
-
+import cv2
 from training import dataset
 
 #----------------------------------------------------------------------------
@@ -68,13 +68,13 @@ def save_image_grid(images, filename, drange, grid_size):
     lo, hi = drange
     gw, gh = grid_size
     images = np.asarray(images, dtype=np.float32)
-    images = (images - lo) * (255 / (hi - lo))
-    images = np.rint(images).clip(0, 255).astype(np.uint8)
+    images = (images - lo) * (65535 / (hi - lo))
+    images = np.rint(images).clip(0, 65535).astype(np.uint16)
     _N, C, H, W = images.shape
     images = images.reshape(gh, gw, C, H, W)
     images = images.transpose(0, 3, 1, 4, 2)
     images = images.reshape(gh * H, gw * W, C)
-    PIL.Image.fromarray(images, {3: 'RGB', 1: 'L'}[C]).save(filename)
+    cv2.imwrite(filename, images)
 
 #----------------------------------------------------------------------------
 # Main training script.
